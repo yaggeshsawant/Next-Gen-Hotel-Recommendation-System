@@ -43,23 +43,29 @@ View Interactive Dashboard: [Tableau/Yaggesh-Sawant](https://public.tableau.com/
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 📁 Project Structure
 
-| Layer | Technology | Usage / Function |
-| :--- | :--- | :--- |
-| **Backend** | Flask | Web framework |
-| | LangGraph | Workflow orchestration (RAG, feedback) |
-| | LangChain + Gemini | LLM chatbot |
-| | ChromaDB | Vector database for semantic retrieval |
-| | Sentence‑Transformers | Embedding model (MiniLM‑L6‑v2) |
-| | DistilBERT | Fine‑tuned sentiment classifier |
-| | TensorFlow / Keras | Model runtime |
-| | Gmail SMTP | Email notifications |
-| | Google Sheets API | Feedback logging |
-| **Frontend** | HTML, CSS, JavaScript | Responsive UI |
-| | Marked.js | Markdown rendering |
-| | Font Awesome | Icons |
-| | Inter Font | Custom typography |
+```text
+.
+├── Frontend + Backend/
+│   ├── hotel.py          # Flask application (main server)
+│   ├── sentiment.py      # DistilBERT model loader
+│   ├── Feedback.py       # (optional) feedback module – integrated into hotel.py
+│   └── index.html        # single‑page UI
+├── ML_and_DL/
+│   ├── DL.ipynb          # DistilBERT fine‑tuning notebook
+│   └── ML.ipynb          # classical ML experiments
+├── DB_pipeline/          # data processing scripts
+├── run.py                # entry point 
+├── requirements.txt      # Python dependencies
+├── Dockerfile            # build your own Docker image
+├── docker-compose.yml    # run with Docker Compose
+├── .env                  # environment variables
+├── updated_processed_hotel_reviews.csv # dataset for RAG
+├── chatbot_model_bundle.pkl # fine‑tuned DistilBERT model bundle
+├── chromadb/             # Chroma index folder
+└── credentials.json      # Google Sheets service account key
+```
 
 ---
 
