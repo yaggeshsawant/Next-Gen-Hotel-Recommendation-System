@@ -6,7 +6,15 @@
 
 ## 📌 Project Overview
 
-Designed and built a full-stack hotel recommendation platform that combines a RAG-based chatbot (LangGraph + Gemini + ChromaDB) with a fine-tuned DistilBERT sentiment classifier to deliver personalized hotel recommendations and automated review analysis. The system retrieves relevant hotel reviews from a semantic vector database to generate tailored, conversational responses to user queries, while a feedback pipeline automatically analyzes sentiment, triggers email notifications, and logs data to Google Sheets. The platform includes a dark-mode, fully responsive UI, Tableau dashboard integration for analytics, and is fully containerized with Docker for deployment on local machines or AWS EC2.
+Designed an end-to-end Hotel Review Analytics platform processing 500K+ reviews for predictive analytics,
+sentiment analysis, and business intelligence. Benchmarked 9+ classical algorithms (Logistic Regression, Random
+Forest, XGBoost, SVM) with hyperparameter tuning and cross-validation to predict guest experience, deploying the
+best model for real-time inference. Fine-tuned DistilBERT via LoRA for sentiment and aspect-based classification,
+reducing trainable parameters and training time while preserving accuracy. Architected an RAG chatbot using
+LangChain for natural-language querying, summarisation, and automated report generation. Developed a feedback
+form with LangGraph agentic AI where users input feedback text, sentiment is auto-detected by the model, and
+results are redirected to hotel and customer. Built an interactive UI with HTML, CSS, JavaScript, and Flask
+backend integrating prediction, Tableau dashboards, the AI chatbot, and feedback form for seamless analytics.
 
 ---
 
@@ -50,6 +58,32 @@ Embed your live Tableau dashboard via the **Tableau tab** in the UI by replacing
 
 ---
 
+## 📁 Project Structure
+
+```
+.
+├── Frontend + Backend/
+│   ├── hotel.py          # Flask application (main server)
+│   ├── sentiment.py      # DistilBERT model loader
+│   ├── Feedback.py       # (optional) separate feedback module – integrated into hotel.py
+│   └── index.html        # single-page UI
+├── ML_and_DL/
+│   ├── DL.ipynb          # DistilBERT fine-tuning notebook
+│   └── ML.ipynb          # classical ML experiments
+├── DB_pipeline/          # data processing scripts
+├── run.py                # entry point
+├── requirements.txt      # Python dependencies
+├── Dockerfile             # build your own Docker image (optional)
+├── docker-compose.yml     # run with Docker Compose
+├── .env                   # environment variables (never commit)
+├── updated_processed_hotel_reviews.csv  # dataset for RAG
+├── chatbot_model_bundle.pkl              # fine-tuned DistilBERT model bundle
+├── chromadb/              # Chroma index folder (auto-created)
+└── credentials.json       # Google Sheets service account key (optional)
+```
+
+---
+
 ## ⚙️ Application Workflow
 
 ```text
@@ -89,7 +123,7 @@ Before setting up the project locally, ensure the following are installed and co
 
 ## 🐳 Setup & Installation
 
-### Option 1: Local Development (without Docker)
+### Docker Setup
 
 **1. Clone the repository**
 ```bash
@@ -97,67 +131,15 @@ git clone https://github.com/your-username/Next-Gen-Hotel-Recommendation-System.
 cd Next-Gen-Hotel-Recommendation-System
 ```
 
-**2. Create and activate a virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-```
-
-**3. Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-**4. Prepare files**
-Place `updated_processed_hotel_reviews.csv` and `chatbot_model_bundle.pkl` in the root folder, and create a `.env` file (see [Environment Variables](#-environment-variables)).
-
-**5. Run the app**
-```bash
-python run.py
-```
-
-> ⚠️ **Note:** The entry file must be named `run.py` (lowercase) on Linux — the Docker entry point uses `python run.py`. Case matters!
-
-**6. Access the application**
-Open `http://localhost:5000`
-
----
-
-### Option 2: Docker Setup
-
-**Using the pre-built image (easiest):**
+** 2. Activate a virtual environment Using the pre-built docker image (easiest):**
 ```bash
 docker pull yaggeshsawant/my-ml-env:latest
 docker run -it --rm -p 5000:5000 -v "%cd%":/app --env-file .env yaggeshsawant/my-ml-env:latest
 ```
 *(For Linux/macOS, replace `%cd%` with `$(pwd)`)*
 
-**Building your own image:**
-```bash
-docker build -t my-ml-env .
-docker-compose up -d
-```
-
----
-
-### Option 3: AWS EC2 Deployment (Recommended for Production)
-
-See the included `AWS_EC2_Redeployment_Guide.pdf` for full step-by-step instructions. In short:
-
-1. Launch an Ubuntu 26.04 LTS instance (x86_64, `t2.large` or larger).
-2. Open port `5000` in the security group.
-3. SSH into the instance and install Docker.
-4. Copy project files (CSV, model, `.env`) onto the instance.
-5. Run the container:
-```bash
-sudo docker run -d --restart unless-stopped -p 5000:5000 -v $(pwd):/app --env-file .env yaggeshsawant/my-ml-env:latest
-```
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file in the project root:
+**3. Prepare files**
+Place `updated_processed_hotel_reviews.csv` and `chatbot_model_bundle.pkl` in the root folder, and Create a `.env` file in the project root:
 
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key
@@ -168,10 +150,19 @@ EMAIL_PASSWORD=your_app_password   # 16-character app password
 EMAIL_FROM=your_email@gmail.com
 HOTEL_EMAIL=hotel@yourcompany.com  # where to send alerts
 ```
+**4. Run the app**
+```bash
+python run.py
+```
 
-> If you don't want to use email, leave `EMAIL_USER` and `EMAIL_PASSWORD` empty — the app will print emails to the console instead.
+> ⚠️ **Note:** The entry file must be named `run.py` (lowercase) on Linux — the Docker entry point uses `python run.py`. Case matters!
+
+**5. Access the application**
+Open `http://localhost:5000`
+
 
 ---
+
 
 ## 📊 Google Sheets Integration (Optional)
 
@@ -180,32 +171,6 @@ To log feedback to a Google Sheet:
 2. Download the JSON key and save it as `credentials.json` in the project root.
 3. Share your target Google Sheet with the service account email (Editor permissions).
 4. Set `SHEET_NAME` in the code (default: `"Feedback"`).
-
----
-
-## 📁 Project Structure
-
-```
-.
-├── Frontend + Backend/
-│   ├── hotel.py          # Flask application (main server)
-│   ├── sentiment.py      # DistilBERT model loader
-│   ├── Feedback.py       # (optional) separate feedback module – integrated into hotel.py
-│   └── index.html        # single-page UI
-├── ML_and_DL/
-│   ├── DL.ipynb          # DistilBERT fine-tuning notebook
-│   └── ML.ipynb          # classical ML experiments
-├── DB_pipeline/          # data processing scripts
-├── run.py                # entry point
-├── requirements.txt      # Python dependencies
-├── Dockerfile             # build your own Docker image (optional)
-├── docker-compose.yml     # run with Docker Compose
-├── .env                   # environment variables (never commit)
-├── updated_processed_hotel_reviews.csv  # dataset for RAG
-├── chatbot_model_bundle.pkl              # fine-tuned DistilBERT model bundle
-├── chromadb/              # Chroma index folder (auto-created)
-└── credentials.json       # Google Sheets service account key (optional)
-```
 
 ---
 
@@ -218,42 +183,3 @@ To log feedback to a Google Sheet:
 
 ---
 
-## 🧪 Troubleshooting
-
-| Issue | Solution |
-| :--- | :--- |
-| `FileNotFoundError: ...` | Ensure the CSV and model `.pkl` are in the same directory as `run.py`. |
-| ChromaDB not persisting | Use a volume mount or rebuild the index on every start. |
-| Gemini 401 Unauthenticated | Check `GEMINI_API_KEY` in `.env` (no quotes around it). |
-| Email fails with 535 | Use a Gmail App Password, not your regular password. |
-| Model confidence > 100% | Ensure softmax is applied (see `sentiment.py`). |
-| Docker container restarts | Check logs with `docker logs <container_id>` — often caused by a file name case mismatch (`Run.py` vs `run.py`). |
-
----
-
-## 🗂️ Additional Files
-
-* `AWS_EC2_Redeployment_Guide.pdf` — detailed EC2 setup instructions
-* `Docker_Commands_Reference.pdf` — handy Docker commands for day-to-day use
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m 'Add some amazing feature'`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
-5. Open a Pull Request.
-
----
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-## 📧 Contact
-
-Project Link: [https://github.com/your-username/Next-Gen-Hotel-Recommendation-System](https://github.com/your-username/Next-Gen-Hotel-Recommendation-System)
