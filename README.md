@@ -21,10 +21,9 @@ backend integrating prediction, Tableau dashboards, the AI chatbot, and feedback
 ## 🎥 Live Demo
 
 ### 🖼️ Application Preview
-*(Add a screenshot or GIF of the chatbot, sentiment analysis, and feedback tabs here)*
+![Live Demo](assets/ML_demo.gif)
 
-### 🌐 Tableau Dashboard
-Embed your live Tableau dashboard via the **Tableau tab** in the UI by replacing the iframe `src` URL in `index.html`.
+👉 [Watch Full Video](https://drive.google.com/uc?export=download&id=YOUR_FILE_ID)
 
 ---
 
