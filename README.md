@@ -134,7 +134,6 @@ cd Next-Gen-Hotel-Recommendation-System
 **2. Activate a virtual environment Using the pre-built docker image (easiest):**
 ```bash
 docker pull yaggeshsawant/my-ml-env:latest
-docker run -it --rm -p 5000:5000 -v "%cd%":/app --env-file .env yaggeshsawant/my-ml-env:latest
 ```
 *(For Linux/macOS, replace `%cd%` with `$(pwd)`)*
 
@@ -151,10 +150,14 @@ EMAIL_FROM=your_email@gmail.com
 HOTEL_EMAIL=hotel@yourcompany.com  # where to send alerts
 ```
 **4. Run the app**
+for windows
 ```bash
-python run.py
+docker run -it --rm -p 5000:5000 -v "%cd%":/app --env-file .env yaggeshsawant/my-ml-env:latest
 ```
-
+for mac/Linux terminal
+```bash
+docker run -it --rm -p 5000:5000 -v "$(pwd)":/app --env-file .env yaggeshsawant/my-ml-env:latest
+```
 > ⚠️ **Note:** The entry file must be named `run.py` (lowercase) on Linux — the Docker entry point uses `python run.py`. Case matters!
 
 **5. Access the application**
