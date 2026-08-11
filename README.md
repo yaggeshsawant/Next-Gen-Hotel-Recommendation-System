@@ -21,7 +21,7 @@ backend integrating prediction, Tableau dashboards, the AI chatbot, and feedback
 ## 🎥 Live Demo
 
 ### 🖼️ Application Preview
-![Live Demo](assets/ML_demo.gif)
+![Live Demo](assets/ML_project.gif)
 
 👉 [Watch Full Video](https://drive.google.com/uc?export=download&id=YOUR_FILE_ID)
 
