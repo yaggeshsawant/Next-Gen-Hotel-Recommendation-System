@@ -131,7 +131,7 @@ git clone https://github.com/your-username/Next-Gen-Hotel-Recommendation-System.
 cd Next-Gen-Hotel-Recommendation-System
 ```
 
-** 2. Activate a virtual environment Using the pre-built docker image (easiest):**
+**2. Activate a virtual environment Using the pre-built docker image (easiest):**
 ```bash
 docker pull yaggeshsawant/my-ml-env:latest
 docker run -it --rm -p 5000:5000 -v "%cd%":/app --env-file .env yaggeshsawant/my-ml-env:latest
@@ -158,8 +158,9 @@ python run.py
 > ⚠️ **Note:** The entry file must be named `run.py` (lowercase) on Linux — the Docker entry point uses `python run.py`. Case matters!
 
 **5. Access the application**
+```bash
 Open `http://localhost:5000`
-
+```
 
 ---
 
